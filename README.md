@@ -1,35 +1,47 @@
-# GANGogh
+# paintingGAN
 
-Blog post: https://towardsdatascience.com/gangogh-creating-art-with-gans-8d087d8f74a1
+## Overview
+Generative Adversarial Networks can be used to generate new images, new paintings which can look like the painting of the known painter.  A project which consists of a  discriminator network and a generator network.
+Goals
+<li>Create a clean dataset of images of VanGogh if dimension 64 x 64 and rename the images from 0.jpg, 1.jpg, 2.jpg and so on.</li>
+<li>Implement GAN on the dataset to Generate painting that looks like that of Van Gogh.</li>
 
-Note: Code heavily inspired and built off of the improved wasserstein GAN training code available and found at: https://github.com/igul222/improved_wgan_training
+<br><br>
 
 ## Usage:
 
 ### Step 1 - Gather training data
-We used training data from wikiart.org, but any training data will do. It's prefered to download this training data from [this torrent](http://academictorrents.com/details/1d154cde2fab9ec8039becd03d9bb877614d351b) or the [Google Drive file](https://drive.google.com/file/d/1yHqS2zXgCiI9LO4gN-X5W18QYXC5bbQS/view?usp=sharing). If both of those fail, consider using scape_wiki.py as a last resort.
+Made the GAN model on a dataset of paintings by Van Gogh found from kaggle  https://www.kaggle.com/gfolego/vangogh
+<br>
+I wrote the following code for downloading the images: 
+https://github.com/jamiemathew/paintingGAN/blob/master/misc/downloadimages.py
+
 <br><br>
 ### Step 2 - Prepare the training data
-Use picStuff.py to create image data set of 64x64 pieces of art scraped from wikiart. Take note of the `root` and `PATH` variables and modify accordingly.
+The following code contains information about the dataset.
+https://github.com/jamiemathew/paintingGAN/blob/master/tflib/wikiartGenre.py
+<br>
+I following code resizes the images into 64 x 64 pixels dimensions.
+https://github.com/jamiemathew/paintingGAN/blob/master/misc/resize.py
+
 <br><br>
 ### Step 3 - Modify files
-Update the path to the dataset in wikiartGenre.py. Also, update the `styles` variable dictating the number of training images per genre. If using the traning data set linked, above, use the following:
-```python
-styles = {'abstract': 14999,
-          'animal-painting': 1798,
-          'cityscape': 6598,
-          'figurative': 4500,
-          'flower-painting': 1800,
-          'genre-painting': 14997,
-          'landscape': 15000,
-          'marina': 1800,
-          'mythological-painting': 2099,
-          'nude-painting-nu': 3000,
-          'portrait': 14999,
-          'religious-painting': 8400,
-          'still-life': 2996,
-          'symbolic-painting': 2999}
-```
+TRAINING THE MODEL
+<br>
+The generator initially takes in random rgb numbers and generates an image.This generated image is fed into the discriminator alongside a stream of images taken from the actual, ground-truth dataset.The discriminator takes in both real and fake images and returns probabilities, a number between 0 and 1, with 1 representing a prediction of authenticity and 0 representing fake. So you have a double feedback loop:The discriminator is in a feedback loop with the ground truth of the images, which we know.The generator is in a feedback loop with the discriminator.
+<br>
+Libraries used:
+<br>
+time
+functools
+math
+numpy
+Tensorflow
+Image
+Urllib.request
+scipy.misc
+Imageio
+ 
 <br><br>
-### Step 3 - Make art!
+### Step 4 - Make art!
 Run GANGogh.py
